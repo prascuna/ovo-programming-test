@@ -4,7 +4,7 @@ import example.models.AddressBook.{Gender, Person}
 import example.repositories.AddressBookRepository.RepositoryError
 
 trait AddressBookRepository {
-  def findByName(name: String): Either[RepositoryError, Option[Person]]
+  def findByName(name: String): Either[RepositoryError, Person]
 
   def countByGender(gender: Gender): Either[RepositoryError, Int]
 
@@ -18,6 +18,8 @@ object AddressBookRepository {
 
   object RepositoryError {
 
+    case class EntryNotFound(id: String) extends RepositoryError(s"Entry $id not found")
+
     case object EmptyRepository extends RepositoryError("Empty Repository")
 
   }
@@ -25,7 +27,7 @@ object AddressBookRepository {
 }
 
 class InMemoryAddressBook(loader: AddressBookLoader) extends AddressBookRepository {
-  override def findByName(name: String): Either[RepositoryError, Option[Person]] = ???
+  override def findByName(name: String): Either[RepositoryError, Person] = ???
 
   override def countByGender(gender: Gender): Either[RepositoryError, Int] = ???
 

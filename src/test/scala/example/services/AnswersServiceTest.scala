@@ -5,7 +5,7 @@ import java.time.LocalDate
 import example.models.AddressBook.Gender.{Female, Male}
 import example.models.AddressBook.{Gender, Person}
 import example.repositories.AddressBookRepository
-import example.repositories.AddressBookRepository.RepositoryError.EmptyRepository
+import example.repositories.AddressBookRepository.RepositoryError.{EmptyRepository, EntryNotFound}
 import example.services.AnswersService.ServiceError.{EmptyAddressBook, PersonNotFound}
 import org.mockito.ArgumentMatchers._
 import org.mockito.Mockito._
@@ -54,7 +54,7 @@ class AnswersServiceTest extends path.FunSpec with Matchers with MockitoSugar {
         }
         describe("the number of females") {
           it("should be the number returned by the repo") {
-            service.countByGender(Male) shouldBe Right(20)
+            service.countByGender(Female) shouldBe Right(20)
           }
         }
       }
@@ -70,16 +70,16 @@ class AnswersServiceTest extends path.FunSpec with Matchers with MockitoSugar {
         val personA = Person("Person A", Male, LocalDate.of(1977, 12, 12))
         val personB = Person("Person B", Male, LocalDate.of(1978, 1, 2))
         describe("and both name exist in the addressbook") {
-          when(repository.findByName(personA.name)) thenReturn Right(Some(personA))
-          when(repository.findByName(personB.name)) thenReturn Right(Some(personB))
+          when(repository.findByName(personA.name)) thenReturn Right(personA)
+          when(repository.findByName(personB.name)) thenReturn Right(personB)
           val service = AnswersService(repository)
           it("should return the age difference in days of the two given names") {
             service.ageDifference(personA.name, personB.name) shouldBe Right(21)
           }
         }
         describe("and one of the names does not exist in the addressbook") {
-          when(repository.findByName(personA.name)) thenReturn Right(Some(personA))
-          when(repository.findByName(personB.name)) thenReturn Right(None)
+          when(repository.findByName(personA.name)) thenReturn Right(personA)
+          when(repository.findByName(personB.name)) thenReturn Left(EntryNotFound(personB.name))
           val service = AnswersService(repository)
           it("should return a Left(PersonNotFound)") {
             service.ageDifference(personA.name, personB.name) shouldBe Left(PersonNotFound(personB.name))
