@@ -78,12 +78,31 @@ class AnswersServiceTest extends path.FunSpec with Matchers with MockitoSugar {
           }
         }
         describe("and one of the names does not exist in the addressbook") {
-          when(repository.findByName(personA.name)) thenReturn Right(personA)
-          when(repository.findByName(personB.name)) thenReturn Left(EntryNotFound(personB.name))
-          val service = AnswersService(repository)
-          it("should return a Left(PersonNotFound)") {
-            service.ageDifference(personA.name, personB.name) shouldBe Left(PersonNotFound(personB.name))
+          describe("first person"){
+            when(repository.findByName(personA.name)) thenReturn Left(EntryNotFound(personA.name))
+            when(repository.findByName(personB.name)) thenReturn Right(personB)
+            val service = AnswersService(repository)
+            it("should return a Left(PersonNotFound(personA))") {
+              service.ageDifference(personA.name, personB.name) shouldBe Left(PersonNotFound(personA.name))
+            }
           }
+          describe("second person"){
+            when(repository.findByName(personA.name)) thenReturn Right(personA)
+            when(repository.findByName(personB.name)) thenReturn Left(EntryNotFound(personB.name))
+            val service = AnswersService(repository)
+            it("should return a Left(PersonNotFound(PersonB))") {
+              service.ageDifference(personA.name, personB.name) shouldBe Left(PersonNotFound(personB.name))
+            }
+          }
+          describe("both persons"){
+            when(repository.findByName(personA.name)) thenReturn Left(EntryNotFound(personA.name))
+            when(repository.findByName(personB.name)) thenReturn Left(EntryNotFound(personB.name))
+            val service = AnswersService(repository)
+            it("should return a Left(PersonNotFound(personA))") {
+              service.ageDifference(personA.name, personB.name) shouldBe Left(PersonNotFound(personA.name))
+            }
+          }
+
         }
       }
     }
