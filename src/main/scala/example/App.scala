@@ -15,7 +15,7 @@ object App {
       service = AnswersService(repo)
 
       numberOfMales <- service.countByGender(Male)
-      oldestPerson <-service.oldestPerson
+      oldestPerson <- service.oldestPerson
       ageDifference <- service.ageDifference("Bill McKnight", "Paul Robinson")
 
     } yield List(numberOfMales.toString, oldestPerson.name, ageDifference.toString)
