@@ -2,7 +2,7 @@ package example.services
 
 import java.io.File
 
-import example.services.InputParser.Error.{FileNotFound, WrongArguments}
+import example.services.InputParser.ParserError.{FileNotFound, WrongArguments}
 import org.scalatest.{Matchers, path}
 
 class InputParserTest extends path.FunSpec with Matchers {

@@ -3,11 +3,11 @@ package example.services
 import java.io.File
 
 import example.errors.AddressBookError
-import example.services.InputParser.Error.{FileNotFound, WrongArguments}
+import example.services.InputParser.ParserError.{FileNotFound, WrongArguments}
 
 
 object InputParser {
-  def parse(args: Array[String]): Either[Error, File] =
+  def parse(args: Array[String]): Either[ParserError, File] =
     args.length match {
       case 0 => Left(WrongArguments)
       case s if s > 0 =>
@@ -19,13 +19,13 @@ object InputParser {
         }
     }
 
-  sealed abstract class Error(message: String) extends AddressBookError
+  sealed abstract class ParserError(message: String) extends AddressBookError
 
-  object Error {
+  object ParserError {
 
-    case class FileNotFound(filename: String) extends Error(s"File $filename not found")
+    case class FileNotFound(filename: String) extends ParserError(s"File $filename not found")
 
-    case object WrongArguments extends Error("Wrong arguments")
+    case object WrongArguments extends ParserError("Wrong arguments")
 
   }
 
