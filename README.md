@@ -8,7 +8,9 @@
   
 `sbt "run AddressBook"`  
 
-
+## Notes
+The program simulates the presence of a repository layer, even if it's in memory.  
+The service layer delegates the repository for trivial operation like finding the oldest person or counting by gender, whilst keeps for itself what requires some business logic, like calculating the age difference 
 ## Assumptions
  - In order to simplify, if the data is corrupted the repository will behave like there is no data
  - There are no person with the same name in the addressbook
