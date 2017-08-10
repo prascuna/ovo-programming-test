@@ -1,7 +1,10 @@
 package example.repositories
 
-import example.models.AddressBook.{Gender, Person}
+import java.time.LocalDate
+
+import example.models.AddressBook.{AddressBook, Gender, Person}
 import example.repositories.AddressBookRepository.RepositoryError
+import example.repositories.AddressBookRepository.RepositoryError.{EmptyRepository, EntryNotFound}
 
 trait AddressBookRepository {
   def findByName(name: String): Either[RepositoryError, Person]
@@ -27,9 +30,32 @@ object AddressBookRepository {
 }
 
 class InMemoryAddressBook(loader: AddressBookLoader) extends AddressBookRepository {
-  override def findByName(name: String): Either[RepositoryError, Person] = ???
 
-  override def countByGender(gender: Gender): Either[RepositoryError, Int] = ???
+  private val data: AddressBook = loader.load.getOrElse(Map.empty)
 
-  override def oldestPerson: Either[RepositoryError, Person] = ???
+  override def findByName(name: String): Either[RepositoryError, Person] =
+    emptyRepositoryOr {
+      data.get(name).toRight(EntryNotFound(name))
+    }
+
+
+  override def countByGender(gender: Gender): Either[RepositoryError, Int] =
+    emptyRepositoryOr {
+      Right(data.values.count(_.gender == gender))
+    }
+
+  override def oldestPerson: Either[RepositoryError, Person] =
+    emptyRepositoryOr {
+      implicit val localDateOrdering: Ordering[LocalDate] = Ordering.by(_.toEpochDay)
+      implicit val dateOfBirthOrdering = Ordering.by[Person, LocalDate](_.dateOfBirth)
+      Right(data.values.min)
+    }
+
+
+  private def emptyRepositoryOr[T](body: => Either[RepositoryError, T]) =
+    if (data.nonEmpty) {
+      body
+    } else {
+      Left(EmptyRepository)
+    }
 }

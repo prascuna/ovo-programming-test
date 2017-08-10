@@ -67,7 +67,7 @@ class AddressBookRepositoryTest extends path.FunSpec with Matchers with MockitoS
         }
         describe("when finding the oldest person") {
           it("should return the oldest person") {
-            repo.oldestPerson shouldBe Person("Wes Jackson", Male, LocalDate.parse("14/08/74", dtf))
+            repo.oldestPerson shouldBe Right(Person("Wes Jackson", Male, LocalDate.parse("14/08/74", dtf)))
           }
         }
       }
