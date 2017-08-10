@@ -95,10 +95,4 @@ class AddressBookRepositoryTest extends path.FunSpec with Matchers with MockitoS
     }
   }
 
-  //  def emptyRepository = {
-  //    it("should") {
-  //
-  //    }
-  //  }
-
 }
