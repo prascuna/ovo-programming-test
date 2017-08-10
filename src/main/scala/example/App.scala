@@ -19,7 +19,7 @@ object App {
       ageDifference <- service.ageDifference("Bill McKnight", "Paul Robinson")
 
     } yield List(numberOfMales.toString, oldestPerson.name, ageDifference.toString)
-    
+
     answers match {
       case Right(a) => AnswersFormatter.format(a).foreach(println)
       case Left(error) =>
