@@ -1,5 +1,11 @@
 # Coding challenge
 
+## Running the program
+
+## Assumptions
+ - In order to simplify, if the data is corrupted the repository will behave like there is no data
+ - There are no person with the same name in the addressbook
+
 ## The task
 
 Your task is to develop a small application. We need you to build your application in your own GitHub repository.  Please do not fork our repository to create your project.  Once you are done, send us a link to your repository.
