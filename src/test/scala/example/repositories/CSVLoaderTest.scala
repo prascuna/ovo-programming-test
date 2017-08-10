@@ -38,7 +38,7 @@ class CSVLoaderTest extends path.FunSpec with Matchers {
               "Paul Robinson" -> Person("Paul Robinson", Male, LocalDate.parse("15/01/85", dtf)),
               "Gemma Lane" -> Person("Gemma Lane", Female, LocalDate.parse("20/11/91", dtf))
             )
-            loader.load shouldBe expectedAddressBook
+            loader.load shouldBe Right(expectedAddressBook)
           }
         }
       }
