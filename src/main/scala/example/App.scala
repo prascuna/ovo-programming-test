@@ -2,7 +2,7 @@ package example
 
 import example.models.AddressBook.Gender.Male
 import example.repositories.{AddressBookLoader, AddressBookRepository}
-import example.services.{AnswersPrinter, AnswersService, InputParser}
+import example.services.{AnswersFormatter, AnswersService, InputParser}
 
 object App {
 
@@ -19,9 +19,9 @@ object App {
       ageDifference <- service.ageDifference("Bill McKnight", "Paul Robinson")
 
     } yield List(numberOfMales.toString, oldestPerson.name, ageDifference.toString)
-
+    
     answers match {
-      case Right(a) => AnswersPrinter.print(a)
+      case Right(a) => AnswersFormatter.format(a).foreach(println)
       case Left(error) =>
         System.err.println("An Error has occurred:")
         System.err.println(error)
