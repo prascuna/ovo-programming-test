@@ -32,7 +32,7 @@ object App {
 
   private val usage =
     """
-      |sbt "run <inputFile>
+      |sbt "run <inputFile>"
       |
       |Example:
       |

@@ -2,6 +2,13 @@
 
 ## Running the program
 
+`sbt "run <inputFile>"`  
+  
+  Example:
+  
+`sbt "run AddressBook"`  
+
+
 ## Assumptions
  - In order to simplify, if the data is corrupted the repository will behave like there is no data
  - There are no person with the same name in the addressbook
